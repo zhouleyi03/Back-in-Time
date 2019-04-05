@@ -12,10 +12,14 @@ namespace BiT
 		{
 			core::objh6.initObjects();
 		}
-		void run()
+		int linkstart()
 		{
 			init();
 			devkit::Devkit dk;
+			dk.initDk();
+			dk.launch();
+
+			return 0;
 		}
 	private:
 	};

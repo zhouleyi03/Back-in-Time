@@ -11,10 +11,11 @@ namespace BiT
 {
 	namespace gui
 	{
+		typedef void(*menu_func)(void);
 		class Menu
 		{
 		public:
-			Menu(const int &xx, const int &yy) :x(xx), y(yy) {}
+			Menu(const int &xx, const int &yy, const bool &mode = true) :x(xx), y(yy), func_mode(mode) {}
 			void addButton(const std::string &text)
 			{
 				int size = buttons.size();
@@ -23,7 +24,7 @@ namespace BiT
 					b.toggleSelect();
 				buttons.push_back(b);
 			}
-			void registerFunc(void *func, const int &pos)
+			void registerFunc(menu_func func, const int &pos)
 			{
 				if (pos < 0 || pos>15)
 					return;
@@ -35,7 +36,7 @@ namespace BiT
 				for (std::size_t i = 0; i < buttons.size(); i++)
 					core::objh6.getPen()->printButton(buttons[i]);
 			}
-			void onUse()
+			std::size_t onUse()
 			{
 				int inputed = 0;
 				while (true)
@@ -64,16 +65,21 @@ namespace BiT
 						}
 						break;
 					case 13:
-
+						if (funcs[current_pos] != nullptr)
+							funcs[current_pos]();
+						else if (!func_mode)
+							return current_pos;
 						break;
 					default:
 						break;
 					}
 				}
+				return 0;
 			}
 		private:
 			std::vector<Button> buttons;
-			std::array<void*, 16> funcs;
+			std::array<menu_func, 16> funcs;
+			bool func_mode = true;  // 默认直接执行函数，如值为false，按Enter时返回值给调用者处理。
 
 			std::size_t current_pos = 0;
 			int x = 0;

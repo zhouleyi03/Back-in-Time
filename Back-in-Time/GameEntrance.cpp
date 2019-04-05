@@ -7,6 +7,5 @@ int main(int argc, char *argv[])
 	setTitle("Back in Time");
 
 	BiT::Application app;
-	app.run();
-	return 0;
+	return app.linkstart();
 }
