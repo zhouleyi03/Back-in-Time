@@ -16,9 +16,9 @@ namespace BiT
 		public:
 			void printPoint(const Point &p)  const
 			{
-				moveCursor(p.getX(), p.getY());
-				setColor(p.getColor());
-				std::cout << point_types[p.getType()];
+				moveCursor(p._x + p._x, p._y);
+				setColor(p._color);
+				std::cout << point_types[p._type];
 			}
 			void printButton(const gui::Button &b)  const
 			{
@@ -26,6 +26,7 @@ namespace BiT
 				setColor(b.getColor());
 				std::cout << b.getText();
 			}
+			std::array<std::string, 10> getReflector()  const { return point_types; }
 		private:
 			const std::array<std::string, 10> point_types = { "█","■","▲","▼","★" };
 		};

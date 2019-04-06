@@ -12,17 +12,17 @@ namespace BiT
 			Button(const int &x, const int &y, const int &color, const std::string &t) :
 				text(t), attr(graphics::Point(x, y, color, 0)) {}
 			std::string getText()  const { return text; }
-			inline int getX()  const { return attr.getX(); }
-			inline int getY()  const { return attr.getY(); }
-			inline int getColor()  const { return attr.getColor(); }
-			inline int getType()  const { return attr.getType(); }
+			inline int getX()  const { return attr._x; }
+			inline int getY()  const { return attr._y; }
+			inline int getColor()  const { return attr._color; }
+			inline int getType()  const { return attr._type; }
 
 			void toggleSelect()
 			{
-				if (attr.getColor() > 240)
-					attr = graphics::Point(attr.getX(), attr.getY(), attr.getColor() - 240, 0);
+				if (attr._color > 240)
+					attr._color -= 240;  // 此处曾有一个BUG。
 				else
-					attr = graphics::Point(attr.getX(), attr.getY(), attr.getColor() + 240, 0);
+					attr._color += 240;
 			}
 		private:
 			std::string text;

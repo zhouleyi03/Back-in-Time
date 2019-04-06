@@ -26,7 +26,7 @@ namespace BiT
 			}
 			void registerFunc(menu_func func, const int &pos)
 			{
-				if (pos < 0 || pos>15)
+				if (pos < 0 || pos > 15)
 					return;
 				funcs[pos] = func;
 			}
