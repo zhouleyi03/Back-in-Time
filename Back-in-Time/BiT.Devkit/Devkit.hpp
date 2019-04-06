@@ -2,6 +2,7 @@
 #include "../BiT.GUI/Menu.hpp"
 #include "../PlatformAPI.hpp"
 #include "../BiT.Graphics/Point.hpp"
+#include "../BiT.Graphics/Effects.hpp"
 
 #include <fstream>
 #include <vector>
@@ -20,6 +21,7 @@ namespace BiT
 				dk_menu.addButton("[3] 加载静态图像");
 				dk_menu.addButton("[4] 关于");
 				dk_menu.addButton("[5] 退出程序");
+				dk_menu.addButton("[6] (Test)溶解特效");
 				setTitle("Back in Time -Devkit Mode");
 				dk_menu.registerFunc([]() {setColor(7); std::exit(0); }, 4); // 注意下标从零开始，所以这里要将对应下标的数字减一。
 			}
@@ -36,6 +38,8 @@ namespace BiT
 						MessageBoxA(nullptr, "zhouleyi03制作 \n-2019/4/5 21:33", "About", 0);
 					else if (code == 2)
 						loadImage("out.bitimg");
+					else if (code == 5)
+						loadImage("out.bitimg", 1);
 				}
 			}
 			void staticImage()
@@ -119,7 +123,7 @@ namespace BiT
 					default:
 						break;
 					}
-					for (int p = 1; p < content.size(); p++)
+					for (std::size_t p = 1; p < content.size(); p++)
 						core::objh6.getPen()->printPoint(content[p]);
 					core::objh6.getPen()->printPoint(content[0]);
 				}
@@ -130,7 +134,7 @@ namespace BiT
 					out << content[i]._x << " " << content[i]._y << " " << content[i]._color << " " << content[i]._type << " ";
 				}
 			}
-			void loadImage(const std::string &img_path)
+			void loadImage(const std::string &img_path, int effect_mode = 0)
 			{
 				std::system("color 0f");
 				clear();
@@ -142,8 +146,11 @@ namespace BiT
 					in >> p_buf[0] >> p_buf[1] >> p_buf[2] >> p_buf[3];
 					buf.emplace_back(p_buf[0], p_buf[1], p_buf[2], p_buf[3]);
 				}
-				for (const auto &p : buf)
-					core::objh6.getPen()->printPoint(p);
+
+				if (effect_mode == 1)
+					graphics::effects::dissolution(buf, 5);
+				else
+					core::objh6.getPen()->printPoints(buf);
 				moveCursor(0, 26);
 				setColor(10);
 				std::cout << "按任意键继续...";

@@ -5,6 +5,7 @@
 
 #include <string>
 #include <array>
+#include <vector>
 #include <iostream>
 
 namespace BiT
@@ -19,6 +20,11 @@ namespace BiT
 				moveCursor(p._x + p._x, p._y);
 				setColor(p._color);
 				std::cout << point_types[p._type];
+			}
+			void printPoints(const std::vector<Point> &v)  const
+			{
+				for (const auto &p : v)
+					printPoint(p);
 			}
 			void printButton(const gui::Button &b)  const
 			{

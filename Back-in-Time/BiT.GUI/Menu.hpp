@@ -53,6 +53,14 @@ namespace BiT
 							buttons[current_pos].toggleSelect();
 							core::objh6.getPen()->printButton(buttons[current_pos]);
 						}
+						else
+						{
+							buttons[current_pos].toggleSelect();
+							core::objh6.getPen()->printButton(buttons[current_pos]);
+							current_pos = buttons.size() - 1;
+							buttons[current_pos].toggleSelect();
+							core::objh6.getPen()->printButton(buttons[current_pos]);
+						}
 						break;
 					case 115:
 						if (current_pos < buttons.size() - 1)
@@ -60,6 +68,14 @@ namespace BiT
 							buttons[current_pos].toggleSelect();
 							core::objh6.getPen()->printButton(buttons[current_pos]);
 							++current_pos;
+							buttons[current_pos].toggleSelect();
+							core::objh6.getPen()->printButton(buttons[current_pos]);
+						}
+						else
+						{
+							buttons[current_pos].toggleSelect();
+							core::objh6.getPen()->printButton(buttons[current_pos]);
+							current_pos = 0;
 							buttons[current_pos].toggleSelect();
 							core::objh6.getPen()->printButton(buttons[current_pos]);
 						}
