@@ -18,7 +18,7 @@ namespace BiT
 			Menu(const int &xx, const int &yy, const bool &mode = true) :x(xx), y(yy), func_mode(mode) {}
 			void addButton(const std::string &text)
 			{
-				int size = buttons.size();
+				auto size = static_cast<int>(buttons.size());
 				Button b(x, y + 3 * size, 11, text);
 				if (size == 0)
 					b.toggleSelect();
@@ -33,12 +33,14 @@ namespace BiT
 			void printSelf()  const
 			{
 				if (buttons.empty()) return;
-				for (std::size_t i = 0; i < buttons.size(); i++)
-					core::objh6.getPen()->printButton(buttons[i]);
+				for (int i = 0; i < buttons.size(); i++)
+					core::global::handler.getPen()->printButton(buttons[i]);
 			}
-			std::size_t onUse()
+			int onUse()
 			{
 				int inputed = 0;
+				int button_num = static_cast<int>(buttons.size() - 1);
+
 				while (true)
 				{
 					inputed = _getch();
@@ -48,43 +50,43 @@ namespace BiT
 						if (current_pos > 0)
 						{
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 							--current_pos;
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 						}
 						else
 						{
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
-							current_pos = buttons.size() - 1;
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
+							current_pos = button_num;
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 						}
 						break;
 					case 115:
-						if (current_pos < buttons.size() - 1)
+						if (current_pos < button_num)
 						{
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 							++current_pos;
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 						}
 						else
 						{
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 							current_pos = 0;
 							buttons[current_pos].toggleSelect();
-							core::objh6.getPen()->printButton(buttons[current_pos]);
+							core::global::handler.getPen()->printButton(buttons[current_pos]);
 						}
 						break;
 					case 13:
-						if (funcs[current_pos] != nullptr)
-							funcs[current_pos]();
-						else if (!func_mode)
+						if (!func_mode)
 							return current_pos;
+						else if (funcs[current_pos] != nullptr)
+							funcs[current_pos]();
 						break;
 					default:
 						break;
@@ -94,10 +96,10 @@ namespace BiT
 			}
 		private:
 			std::vector<Button> buttons;
-			std::array<menu_func, 16> funcs;
-			bool func_mode = true;  // 默认直接执行函数，如值为false，按Enter时返回值给调用者处理。
+			std::array<menu_func, 16> funcs = { nullptr };
+			bool func_mode = false;  // 默认按Enter时返回值给调用者处理，如值为true，直接执行对应pos所绑定的函数。
 
-			std::size_t current_pos = 0;
+			int current_pos = 0;
 			int x = 0;
 			int y = 0;
 		};

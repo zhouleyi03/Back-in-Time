@@ -10,7 +10,7 @@ namespace BiT
 	public:
 		void init()
 		{
-			core::objh6.initObjects();
+			core::global::handler.initObjects();
 		}
 		int linkstart()
 		{

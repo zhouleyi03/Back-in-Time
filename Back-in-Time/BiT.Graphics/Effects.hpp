@@ -4,11 +4,13 @@
 #include "../PlatformAPI.hpp"
 
 #include <vector>
+#include <chrono>
 #include <Windows.h>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <thread>
 #include <random>
 
 namespace BiT
@@ -23,15 +25,15 @@ namespace BiT
 				void randomizeArray(std::vector<T> &v, std::size_t dest_pos = 0)
 				{
 					std::default_random_engine e;
-					std::size_t size = v.size() - 1;
+					int size = static_cast<int>(v.size() - 1);
 					int randomized_pos = 0;
 					if (dest_pos == 0)
 						dest_pos = size;
 
-					for (std::size_t i = 0; i < dest_pos; i++)
+					for (int i = 0; i < dest_pos; i++)
 					{
 						std::uniform_int_distribution<int> u(i, size);
-						e.seed(std::time(nullptr));
+						e.seed(static_cast<unsigned>(std::time(nullptr)));
 						randomized_pos = u(e);
 
 						auto current_point = v[i];
@@ -43,11 +45,11 @@ namespace BiT
 				{
 					randomizeArray(v);
 					if (velocity == 0)
-						core::objh6.getPen()->printPoints(v);
+						core::global::handler.getPen()->printPoints(v);
 					else
 						for (std::size_t j = 0; j < v.size(); j++)
 						{
-							core::objh6.getPen()->printPoint(v[j]);
+							core::global::handler.getPen()->printPoint(v[j]);
 							Sleep(velocity);
 						}
 				}
@@ -61,31 +63,27 @@ namespace BiT
 					delete ssm;
 
 					std::default_random_engine e;
-					std::size_t size = bg.size() - 1;
+					auto size = static_cast<int>(bg.size() - 1);
 					int randomized_pos = 0;
 					std::string back = bg;
 
-					auto f = &bg;
-					auto b = &back;
-					auto c = f;
-					setColor(6);
+					setColor(10);
 					while(1)
-					for (std::size_t i = 0; i < size; i++)
+					for (int i = 0; i < size; i++)
 					{
 						static std::uniform_int_distribution<int> u(i, size);
 						randomized_pos = u(e);
 						
-						std::cout << *f;
-						c = b;
-						b = f;
-						f = c;
+						std::ios::sync_with_stdio(false);
+						std::cout << bg;
+						std::this_thread::sleep_for(std::chrono::milliseconds(15));
 						moveCursor(0, 0);
 
 						//auto current_point = bg[i];
 						//bg[i] = bg[randomized_pos];
 						//bg[randomized_pos] = current_point;
-						(*f)[randomized_pos] = '1';
-						(*f)[randomized_pos + 1] = '0';
+						bg[randomized_pos] = '1';
+						bg[randomized_pos + 1] = '0';
 					}
 					moveCursor(60, 13);
 				}

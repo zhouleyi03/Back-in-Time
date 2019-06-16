@@ -7,8 +7,6 @@ int main(int argc, char *argv[])
 {
 	initWinapi();
 	setTitle("Back in Time");
-	std::cin.get();
-	BiT::graphics::effects::horizontalCharRain("Back in Time", "BiT.Resource/ui/char_bg.txt");
-	//BiT::Application app;
-	//return app.linkstart();
+	BiT::Application app;
+	return app.linkstart();
 }

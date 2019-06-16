@@ -23,12 +23,13 @@ namespace BiT
 				dk_menu.addButton("[5] 退出程序");
 				dk_menu.addButton("[6] (Test)溶解特效");
 				setTitle("Back in Time -Devkit Mode");
-				dk_menu.registerFunc([]() {setColor(7); std::exit(0); }, 4); // 注意下标从零开始，所以这里要将对应下标的数字减一。
+				//dk_menu.registerFunc([]() {setColor(7); std::exit(0); }, 4); // 注意下标从零开始，所以这里要将对应下标的数字减一。
 			}
 			void launch()
 			{
 				while (true)
 				{
+					setColor(10);
 					clear();
 					dk_menu.printSelf();
 					int code = dk_menu.onUse();
@@ -38,6 +39,8 @@ namespace BiT
 						MessageBoxA(nullptr, "zhouleyi03制作 \n-2019/4/5 21:33", "About", 0);
 					else if (code == 2)
 						loadImage("out.bitimg");
+					else if (code == 4)
+						std::exit(0);
 					else if (code == 5)
 						loadImage("out.bitimg", 1);
 				}
@@ -63,7 +66,7 @@ namespace BiT
 				}
 				std::cout << std::endl;
 				for (int n = 0; n < 5; n++)
-					std::cout << core::objh6.getPen()->getReflector()[n] << " ";
+					std::cout << core::global::handler.getPen()->getReflector()[n] << " ";
 
 				while (true)
 				{
@@ -117,15 +120,19 @@ namespace BiT
 							++content[0]._color;
 						break;
 					case 75:  // left arrow
+						if (content[0]._type > 0)
+							--content[0]._type;
 						break;
 					case 77:  // right arrow
+						if (content[0]._type < 5)
+							++content[0]._type;
 						break;
 					default:
 						break;
 					}
 					for (std::size_t p = 1; p < content.size(); p++)
-						core::objh6.getPen()->printPoint(content[p]);
-					core::objh6.getPen()->printPoint(content[0]);
+						core::global::handler.getPen()->printPoint(content[p]);
+					core::global::handler.getPen()->printPoint(content[0]);
 				}
 			SaveImage:
 				std::ofstream out("out.bitimg", std::ios::trunc);
@@ -150,7 +157,7 @@ namespace BiT
 				if (effect_mode == 1)
 					graphics::effects::dissolution(buf, 5);
 				else
-					core::objh6.getPen()->printPoints(buf);
+					core::global::handler.getPen()->printPoints(buf);
 				moveCursor(0, 26);
 				setColor(10);
 				std::cout << "按任意键继续...";

@@ -11,11 +11,6 @@ namespace
 		handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	}
 
-	void clear()
-	{
-		std::system("cls");
-	}
-
 	inline void moveCursor(const short &x, const short &y)
 	{
 		SetConsoleCursorPosition(handle, COORD{ x,y });
@@ -24,6 +19,11 @@ namespace
 	inline void setColor(const short &color)
 	{
 		SetConsoleTextAttribute(handle, color);
+	}
+
+	void clear()
+	{
+		std::system("cls");
 	}
 
 	void setTitle(const char *title)

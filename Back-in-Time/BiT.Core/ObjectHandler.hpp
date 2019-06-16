@@ -18,6 +18,12 @@ namespace BiT
 		private:
 			std::shared_ptr<graphics::Pen> pen;
 		};
-		static ObjectHandler objh6;
+		namespace global
+		{
+			namespace
+			{
+				ObjectHandler handler;
+			}
+		}
 	}
 }
